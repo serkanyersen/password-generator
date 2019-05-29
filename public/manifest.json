@@ -1,6 +1,6 @@
 {
-  "name": "password-generator",
-  "short_name": "password-generator",
+  "name": "Password Generator",
+  "short_name": "password gen",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",

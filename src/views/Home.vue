@@ -1,6 +1,9 @@
 <template>
   <div class="home">
-    <h1>Password generator</h1>
+    <h1>
+      <img src="/img/icon.png" alt="logo" align="top" width="40px">
+      Password Generator
+    </h1>
     <generator-form></generator-form>
   </div>
 </template>

@@ -1,18 +1,23 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Password generator</h1>
+    <generator-form></generator-form>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+import GeneratorForm from '../components/GeneratorForm.vue';
 
 export default {
   name: 'home',
   components: {
-    HelloWorld,
+    GeneratorForm,
   },
 };
 </script>
+
+<style>
+.home {
+  grid-column-start: 2;
+}
+</style>

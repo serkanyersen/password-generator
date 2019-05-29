@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h1>
-      <img src="/img/icon.png" alt="logo" align="top" width="40px">
+      <img src="/img/icon.png" alt="logo" align="top" width="30px">
       Password Generator
     </h1>
     <generator-form></generator-form>
@@ -19,8 +19,13 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .home {
   grid-column-start: 2;
+
+  h1 {
+    white-space: nowrap;
+    font-size: 24px;
+  }
 }
 </style>

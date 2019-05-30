@@ -5136,6 +5136,11 @@ locate-path@^3.0.0:
     p-locate "^3.0.0"
     path-exists "^3.0.0"
 
+lodash-es@^4.17.11:
+  version "4.17.11"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.11.tgz#145ab4a7ac5c5e52a3531fb4f310255a152b4be0"
+  integrity sha512-DHb1ub+rMjjrxqlB3H56/6MXtm1lSksDp2rA2cNWjG8mlDUYFhUj3Di2Zn5IwSU87xLv8tNIQ7sSwE/YOX/D/Q==
+
 lodash._reinterpolate@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz#0ccf2d89166af03b3663c796538b75ac6e114d9d"
@@ -8548,11 +8553,6 @@ vue-property-decorator@^8.0.0:
   dependencies:
     vue-class-component "^7.0.1"
 
-vue-router@^3.0.3:
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.6.tgz#2e4f0f9cbb0b96d0205ab2690cfe588935136ac3"
-  integrity sha512-Ox0ciFLswtSGRTHYhGvx2L44sVbTPNS+uD2kRISuo8B39Y79rOo0Kw0hzupTmiVtftQYCZl87mwldhh2L9Aquw==
-
 vue-slider-component@^3.0.31:
   version "3.0.31"
   resolved "https://registry.yarnpkg.com/vue-slider-component/-/vue-slider-component-3.0.31.tgz#50571bef97b988f12a25851890ef74d90be55a25"
@@ -8590,11 +8590,6 @@ vue@^2.6.10:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
-
-vuex@^3.0.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.1.1.tgz#0c264bfe30cdbccf96ab9db3177d211828a5910e"
-  integrity sha512-ER5moSbLZuNSMBFnEBVGhQ1uCBNJslH9W/Dw2W7GZN23UQA69uapP5GTT9Vm8Trc0PzBSVt6LzF3hGjmv41xcg==
 
 watchpack@^1.5.0:
   version "1.6.0"
@@ -9075,8 +9070,3 @@ yorkie@^2.0.0:
     is-ci "^1.0.10"
     normalize-path "^1.0.0"
     strip-indent "^2.0.0"
-
-zxcvbn@^4.4.2:
-  version "4.4.2"
-  resolved "https://registry.yarnpkg.com/zxcvbn/-/zxcvbn-4.4.2.tgz#28ec17cf09743edcab056ddd8b1b06262cc73c30"
-  integrity sha1-KOwXzwl0PtyrBW3dixsGJizHPDA=

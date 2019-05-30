@@ -11,14 +11,11 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
-    "lodash": "^4.17.11",
+    "lodash-es": "^4.17.11",
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.10",
-    "vue-router": "^3.0.3",
     "vue-slider-component": "^3.0.31",
-    "vue-toasted": "^1.1.27",
-    "vuex": "^3.0.1",
-    "zxcvbn": "^4.4.2"
+    "vue-toasted": "^1.1.27"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <home />
 
     <footer>
       <div>
@@ -15,6 +15,17 @@
     </footer>
   </div>
 </template>
+
+<script>
+import Home from './views/Home.vue';
+
+export default {
+  components: {
+    Home,
+  },
+};
+</script>
+
 
 <style lang="scss">
 html, body {

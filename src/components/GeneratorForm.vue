@@ -79,10 +79,10 @@
 </template>
 
 <script>
-import _ from 'lodash';
+import _times from 'lodash-es/times';
+import _sample from 'lodash-es/sample';
 import VueSlider from 'vue-slider-component';
 import 'vue-slider-component/theme/default.css';
-import zxcvbn from 'zxcvbn';
 import PasswordField from './PasswordField.vue';
 
 const CHAR_TYPES = {
@@ -165,8 +165,8 @@ export default {
       this.password = [];
 
       if (this.selected === 'pin') {
-        _.times(this.length, () => {
-          this.password.push({ type: 'NUMS', value: _.sample(CHAR_TYPES.NUMS) });
+        _times(this.length, () => {
+          this.password.push({ type: 'NUMS', value: _sample(CHAR_TYPES.NUMS) });
         });
       } else {
         const charLength = Math.max(this.length - this.symbols - this.numbers, 0);
@@ -184,9 +184,9 @@ export default {
         });
 
         while (this.password.length !== this.length) {
-          const type = _.sample(Array.from(picks.keys()));
+          const type = _sample(Array.from(picks.keys()));
           const leftCount = picks.get(type);
-          const value = _.sample(CHAR_TYPES[type]);
+          const value = _sample(CHAR_TYPES[type]);
           if (this.ambiguous && CHAR_TYPES.ACHARS.has(value)) {
             // eslint-disable-next-line no-continue
             continue;
@@ -200,7 +200,7 @@ export default {
         }
       }
 
-      this.analysis = zxcvbn(this.passwordSting);
+      this.analysis = { score: 4 };
     },
   },
 };

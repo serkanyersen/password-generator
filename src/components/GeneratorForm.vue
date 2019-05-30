@@ -10,13 +10,13 @@
       </button>
       <button class="btn" value="pin" :class="{ 'active': selected == 'pin' }">PIN</button>
     </div>
-    <div
-      class="output password"
+    <password-field
+      :password="password"
       :class="{[`score-${analysis.score}`]: true}"
       ref="output"
-      @click="copy"
-      v-html="password"
-    ></div>
+      class="output"
+      @click.native="copy"
+    />
 
     <!-- <input type="text" ref="output" v-model="passwordRaw" > -->
 
@@ -59,13 +59,21 @@
     </div>
     <div class="history">
       <h3>History <button class="btn" @click="clearHistory">Clear</button></h3>
-      <div
+        <password-field
+          v-for="(pass, index) in history"
+          :key="index"
+          :password="pass"
+          @click.native="copy"
+        />
+      <!-- <div
         class="password"
-        v-for="pass in history"
-        :key="pass"
-        v-html="pass"
-        @click="copy"
-      ></div>
+        @click="copy">
+        <span v-for="({type, value}, index) in pass" :class="type" :key="index" @click="copy">
+          {{value}}
+        </span>
+      </div> -->
+
+
     </div>
   </div>
 </template>
@@ -75,6 +83,14 @@ import _ from 'lodash';
 import VueSlider from 'vue-slider-component';
 import 'vue-slider-component/theme/default.css';
 import zxcvbn from 'zxcvbn';
+import PasswordField from './PasswordField.vue';
+
+const CHAR_TYPES = {
+  CHARS: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  NUMS: '0123456789',
+  SIGNS: '@#$%^&*-_|/<>![]{}().,`~=+?;',
+  ACHARS: 'I1loO0',
+};
 
 function getSafe(name, defaultVal) {
   try {
@@ -96,6 +112,7 @@ export default {
   name: 'Form',
   components: {
     VueSlider,
+    PasswordField,
   },
   data() {
     return {
@@ -104,13 +121,18 @@ export default {
       length: 10,
       numbers: 1,
       symbols: 1,
-      password: '',
+      password: [],
       analysis: {},
       ambiguous: true,
     };
   },
   mounted() {
     this.generate();
+  },
+  computed: {
+    passwordSting() {
+      return this.password.map(({ value }) => value).join('');
+    },
   },
   methods: {
     clearHistory() {
@@ -140,42 +162,44 @@ export default {
       });
     },
     generate() {
-      let password = [];
-      const chars = _.shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
-      const nums = '0123456789';
-      const sign = '@#$%^&*-_|/<>![]{}().,`~=+?;';
-      const achars = 'I1loO0';
+      this.password = [];
 
       if (this.selected === 'pin') {
         _.times(this.length, () => {
-          password.push(_.sample(nums));
+          this.password.push({ type: 'NUMS', value: _.sample(CHAR_TYPES.NUMS) });
         });
       } else {
         const charLength = Math.max(this.length - this.symbols - this.numbers, 0);
 
-        _.times(charLength, () => password.push(_.sample(chars)));
-        _.times(this.numbers, () => password.push(_.sample(nums)));
-        _.times(this.symbols, () => password.push(_.sample(sign)));
+        const askedParams = new Map([
+          ['CHARS', charLength],
+          ['NUMS', this.numbers],
+          ['SIGNS', this.symbols],
+        ]);
 
-        if (this.ambiguous) {
-          password = password.map(c => (c === '0' || c === '1' ? _.random(2, 9) : c));
-          password = password.map(c => (achars.includes(c) ? 'a' : c));
+        askedParams.forEach((count, type) => {
+          if (!count) {
+            askedParams.delete(type);
+          }
+        });
+
+        while (this.password.length !== this.length) {
+          const type = _.sample(Array.from(askedParams.keys()));
+          const leftCount = askedParams.get(type);
+          const nextChar = _.sample(CHAR_TYPES[type]);
+          if (this.ambiguous && CHAR_TYPES.ACHARS.includes(nextChar)) {
+            // eslint-disable-next-line no-continue
+            continue;
+          }
+          this.password.push({ type, value: nextChar });
+
+          // eslint-disable-next-line no-unused-expressions
+          leftCount === 1
+            ? askedParams.delete(type)
+            : askedParams.set(type, leftCount - 1);
         }
       }
-
-      const generated = _.sampleSize(_.shuffle(password), this.length);
-
-      this.password = generated.map((char) => {
-        let klass = 'char';
-
-        if (nums.includes(char)) { klass = 'num'; }
-        if (sign.includes(char)) { klass = 'sign'; }
-
-        return `<span class="${klass}">${char}</span>`;
-      }).join('');
-
-      this.analysis = zxcvbn(generated.join(''));
-      // this.passwordRaw = generated.join('');
+      this.analysis = zxcvbn(this.passwordSting);
     },
   },
 };
@@ -193,32 +217,6 @@ export default {
 
     .output {
       grid-area: output;
-    }
-
-    .password {
-      font-family: courier;
-      font-size: 16px;
-      user-select: all;
-      border: 2px solid #ccc;
-      border-radius: 5px;
-      background: #fff;
-      overflow: hidden;
-      white-space: nowrap;
-      font-weight: bold;
-
-      span {
-        display: inline-block;
-        padding: 10px 4px;
-        border-right: 0.5px dashed #ccc;
-
-        &::selection {
-          color: rgba(0, 0, 0, 0.5);
-        }
-
-        &:nth-child(odd) {
-          background: #f5f5f5;
-        }
-      }
     }
 
     .btn {
@@ -281,9 +279,6 @@ export default {
         width: 20px;
       }
     }
-    .char {color: gray;}
-    .num {color: #67B3FB;}
-    .sign {color: #FE8168;}
     .score-0 { border-color: #ff5b00; }
     .score-1 { border-color: #bda50a; }
     .score-2 { border-color: #c7b608; }

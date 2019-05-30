@@ -89,7 +89,7 @@ const CHAR_TYPES = {
   CHARS: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
   NUMS: '0123456789',
   SIGNS: '@#$%^&*-_|/<>![]{}().,`~=+?;',
-  ACHARS: 'I1loO0',
+  ACHARS: new Set(['I', '1', 'l', 'o', 'O', '0']),
 };
 
 function getSafe(name, defaultVal) {
@@ -171,34 +171,35 @@ export default {
       } else {
         const charLength = Math.max(this.length - this.symbols - this.numbers, 0);
 
-        const askedParams = new Map([
+        const picks = new Map([
           ['CHARS', charLength],
           ['NUMS', this.numbers],
           ['SIGNS', this.symbols],
         ]);
 
-        askedParams.forEach((count, type) => {
+        picks.forEach((count, type) => {
           if (!count) {
-            askedParams.delete(type);
+            picks.delete(type);
           }
         });
 
         while (this.password.length !== this.length) {
-          const type = _.sample(Array.from(askedParams.keys()));
-          const leftCount = askedParams.get(type);
-          const nextChar = _.sample(CHAR_TYPES[type]);
-          if (this.ambiguous && CHAR_TYPES.ACHARS.includes(nextChar)) {
+          const type = _.sample(Array.from(picks.keys()));
+          const leftCount = picks.get(type);
+          const value = _.sample(CHAR_TYPES[type]);
+          if (this.ambiguous && CHAR_TYPES.ACHARS.has(value)) {
             // eslint-disable-next-line no-continue
             continue;
           }
-          this.password.push({ type, value: nextChar });
+          this.password.push({ type, value });
 
           // eslint-disable-next-line no-unused-expressions
           leftCount === 1
-            ? askedParams.delete(type)
-            : askedParams.set(type, leftCount - 1);
+            ? picks.delete(type)
+            : picks.set(type, leftCount - 1);
         }
       }
+
       this.analysis = zxcvbn(this.passwordSting);
     },
   },

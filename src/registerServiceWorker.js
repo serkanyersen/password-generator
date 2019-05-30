@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-
 import { register } from 'register-service-worker';
+import Vue from 'vue';
 
 if (process.env.NODE_ENV === 'production') {
   register(`${process.env.BASE_URL}service-worker.js`, {
@@ -20,7 +20,17 @@ if (process.env.NODE_ENV === 'production') {
       console.log('New content is downloading.');
     },
     updated() {
-      console.log('New content is available; please refresh.');
+      Vue.toasted.show('New Version Available!', {
+        theme: 'bubble',
+        position: 'bottom-center',
+        duration: 5000,
+        action: {
+          text: 'RELOAD',
+          onClick: () => {
+            window.location.reload(true);
+          },
+        },
+      });
     },
     offline() {
       console.log('No internet connection found. App is running in offline mode.');

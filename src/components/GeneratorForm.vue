@@ -52,7 +52,7 @@
           @change="generate"
         ></vue-slider>
       </label>
-      <label class="ambiguous" v-show="selected !== 'pin'">
+      <label title="'I', '1', 'l', 'o', 'O', '0'" class="ambiguous" v-show="selected !== 'pin'">
         <span>Avoid ambigious characters</span>
         <input type="checkbox" v-model="ambiguous" @change="generate">
       </label>
